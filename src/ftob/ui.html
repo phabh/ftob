@@ -1,13 +1,12 @@
-<h2>Rectangle Creator</h2>
-<p>Count: <input id="count" value="5"></p>
-<button id="create">Create</button>
+<h2>Figma to Blip</h2>
+<p>ApiKey <input id="blipApiKey" value=""></p>
+<button id="updateFromBlip">Update From Blip</button>
 <button id="cancel">Cancel</button>
 <script>
 
-document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('count');
-  const count = parseInt(textbox.value, 10);
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+document.getElementById('updateFromBlip').onclick = () => {
+  const apiKey = document.getElementById('blipApiKey');
+  parent.postMessage({ pluginMessage: { type: 'update-from-blip', apiKey } }, '*')
 }
 
 document.getElementById('cancel').onclick = () => {

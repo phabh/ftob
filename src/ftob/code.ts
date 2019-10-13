@@ -14,8 +14,24 @@ figma.showUI(__html__);
 figma.ui.onmessage = msg => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
+  if (msg.type === 'update-from-blip') {
+    updateFromBlip(msg.blipFlowJSON);
+  }
+
+
   if (msg.type === 'create-rectangles') {
     const nodes: SceneNode[] = [];
+
+    let containBlipFlow = figma.root.children.some( (page, index, pages) => { return page.name.indexOf("blip-flow") > 0;  } );
+    console.log(containBlipFlow);
+    if(!containBlipFlow)
+    {
+      figma.createPage();
+      let totalPages = figma.root.children.length;
+      figma.root.children[totalPages-1].name = "blip-flow";
+      figma.currentPage = figma.root.children[totalPages-1];
+    }
+
     for (let i = 0; i < msg.count; i++) {
       const rect = figma.createRectangle();
       rect.x = i * 150;
@@ -31,3 +47,25 @@ figma.ui.onmessage = msg => {
   // keep running, which shows the cancel button at the bottom of the screen.
   figma.closePlugin();
 };
+
+function createPageBlipFlow()
+{
+  let containBlipFlow = figma.root.children.some( (page, index, pages) => { return page.name.indexOf("blip-flow") > 0;  } );
+  console.log(containBlipFlow);
+  if(!containBlipFlow)
+  {
+    figma.createPage();
+    let totalPages = figma.root.children.length;
+    figma.root.children[totalPages-1].name = "blip-flow";
+    figma.currentPage = figma.root.children[totalPages-1];
+  }
+};
+
+function updateFromBlip(blipFlowJSON:string)
+{
+  createPageBlipFlow();
+  let blipFlow = JSON.parse(blipFlowJSON);
+
+
+
+}
